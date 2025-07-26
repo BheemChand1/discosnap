@@ -19,8 +19,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $photos = $row['photos'];
         $photos_arr = array_filter(explode(',', $photos));
         // Remove the photo from the array (match full URL or filename)
-        $photos_arr = array_filter($photos_arr, function($item) use ($photo) {
-            return trim($item) !== trim($photo);
+        $photo_basename = basename(parse_url($photo, PHP_URL_PATH));
+        $photos_arr = array_filter($photos_arr, function($item) use ($photo, $photo_basename) {
+            $item = trim($item);
+            if ($item === $photo) return false;
+            // Also remove if just the filename matches
+            $item_basename = basename(parse_url($item, PHP_URL_PATH));
+            if ($item_basename === $photo_basename) return false;
+            return true;
         });
         $new_photos = implode(',', $photos_arr);
         // Update DB
