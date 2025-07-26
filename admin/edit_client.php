@@ -56,7 +56,9 @@ $client = $result->fetch_assoc();
                                     foreach ($photos as $photo) {
                                         $photo = trim($photo);
                                         if ($photo) {
-                                            echo '<div class="col-3 mb-2"><img src="../uploads/' . htmlspecialchars($photo) . '" class="img-fluid rounded" style="max-height:100px;"></div>';
+                                            // If the photo is a full URL, use as is. Otherwise, prepend the uploads path (for backward compatibility)
+                                            $img_src = (strpos($photo, 'http://') === 0 || strpos($photo, 'https://') === 0) ? $photo : '../uploads/' . htmlspecialchars($photo);
+                                            echo '<div class="col-3 mb-2"><img src="' . htmlspecialchars($img_src) . '" class="img-fluid rounded" style="max-height:100px;"></div>';
                                         }
                                     }
                                 }
