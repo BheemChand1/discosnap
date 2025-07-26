@@ -61,12 +61,52 @@ if ($result->num_rows > 0) {
 
 <div class="col-md-12">
     <div class="card bg-dark text-white">
-        <div class="card-header d-flex justify-content-between align-items-center">
-            <h5 class="card-title mb-0">Client Profile</h5>
-            <a href="edit_client.php?client_id=<?php echo $client_id; ?>" class="btn btn-primary btn-sm">
-    <i class="fas fa-edit"></i> Edit
-</a>
+<div class="card-header d-flex flex-wrap justify-content-between align-items-center gap-2">
+    <div class="d-flex align-items-center gap-2 flex-wrap">
+        <h5 class="card-title mb-0 me-2">Client Profile</h5>
+        <?php if (!empty($client['photos'])): ?>
+            <?php 
+            $photos = explode(',', $client['photos']);
+            foreach ($photos as $photo) {
+                $photo = trim($photo);
+                if ($photo) {
+                    $img_src = (strpos($photo, 'http://') === 0 || strpos($photo, 'https://') === 0) ? $photo : '../uploads/' . htmlspecialchars($photo);
+                    echo '<img src="' . htmlspecialchars($img_src) . '" class="rounded border" style="max-height:40px; max-width:40px; margin-right:4px;">';
+                }
+            }
+            ?>
+        <?php endif; ?>
+        <button class="btn btn-success btn-sm ms-2" data-bs-toggle="modal" data-bs-target="#addPhotoModal"><i class="fas fa-plus"></i> Add Photo</button>
+    </div>
+    <a href="edit_client.php?client_id=<?php echo $client_id; ?>" class="btn btn-primary btn-sm">
+        <i class="fas fa-edit"></i> Edit
+    </a>
+</div>
+
+<!-- Modal for adding more photos -->
+<div class="modal fade" id="addPhotoModal" tabindex="-1" aria-labelledby="addPhotoModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addPhotoModalLabel">Add More Photos</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form action="update_client.php" method="POST" enctype="multipart/form-data">
+        <div class="modal-body">
+          <input type="hidden" name="client_id" value="<?php echo $client_id; ?>">
+          <div class="mb-3">
+            <label class="form-label">Select Photos</label>
+            <input type="file" class="form-control" name="client_photos[]" multiple accept="image/*" required>
+          </div>
         </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-success">Upload</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
         <div class="card-body">
             <div class="row">
     <!-- Profile Header -->
