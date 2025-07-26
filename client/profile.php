@@ -1,27 +1,64 @@
 <?php
-
 session_start();
 // Check if the user is logged in
 if (!isset($_SESSION['user_id'])) {
-    header("Location: ../logout.php"); // Redirect to login page if not logged in
+    header("Location: ../logout.php");
     exit();
 }
 
 include '../connection.php';
-// Retrieve user information from the session
 $user_id = $_SESSION['user_id'];
-// Prepare the SQL query
-$sql = "SELECT client_name_en, mobile, email FROM clients WHERE id = '$user_id'";
-// Execute the query
-$result = $conn->query($sql);
-// Fetch the result
-$client = $result->fetch_assoc();
 
-// Assign data to variables
+// Handle photo deletion before any HTML output
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_photo'], $_POST['photo'], $_POST['client_id'])) {
+    $client_id = intval($_POST['client_id']);
+    $photo_to_delete = trim($_POST['photo']);
+    // Fetch current photos
+    $sql = "SELECT photos FROM clients WHERE id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $client_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $photos = '';
+    if ($row = $result->fetch_assoc()) {
+        $photos = $row['photos'];
+    }
+    $stmt->close();
+    $photos_arr = array_filter(array_map('trim', explode(',', $photos)));
+    // Remove the photo
+    $new_photos = [];
+    foreach ($photos_arr as $p) {
+        if ($p !== $photo_to_delete) {
+            $new_photos[] = $p;
+        } else {
+            // Try to delete the file if it's a local file
+            if (strpos($p, 'http://') !== 0 && strpos($p, 'https://') !== 0) {
+                $file_path = realpath(__DIR__ . '/../uploads/' . $p);
+                if ($file_path && file_exists($file_path)) {
+                    @unlink($file_path);
+                }
+            }
+        }
+    }
+    $photos_str = implode(',', $new_photos);
+    // Update DB
+    $sql = "UPDATE clients SET photos = ? WHERE id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("si", $photos_str, $client_id);
+    $stmt->execute();
+    $stmt->close();
+    // Redirect to self
+    header("Location: profile.php");
+    exit();
+}
+
+// Retrieve user information from the session
+$sql = "SELECT client_name_en, mobile, email FROM clients WHERE id = '$user_id'";
+$result = $conn->query($sql);
+$client = $result->fetch_assoc();
 $client_name = $client['client_name_en'];
 $mobile = $client['mobile'];
 $email = $client['email'];
-
 ?>
 
 <!DOCTYPE html>
