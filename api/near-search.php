@@ -26,6 +26,7 @@ $query = "
            c.to_date, 
            c.camera_status, 
            c.status, 
+           c.photos,
            c.latitude, 
            c.longitude, 
            c.club_thumbnail, 
