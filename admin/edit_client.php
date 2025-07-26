@@ -46,7 +46,8 @@ $client = $result->fetch_assoc();
                     <form action="update_client.php" method="POST" enctype="multipart/form-data">
                         <div class="mb-3">
                             <label class="form-label">Client Photos</label>
-                            <input type="file" class="form-control" name="client_photos[]" multiple accept="image/*">
+                            <input type="file" class="form-control" id="client_photos" name="client_photos[]" multiple accept="image/*" onchange="previewClientPhotos(event)">
+                            <div class="row mt-2" id="selected-photos-preview"></div>
                             <div class="row mt-2">
                                 <!-- Display existing client photos if any -->
                                 <?php
@@ -233,6 +234,27 @@ $client = $result->fetch_assoc();
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/script.js"></script>
+    <script>
+    function previewClientPhotos(event) {
+        const files = event.target.files;
+        const preview = document.getElementById('selected-photos-preview');
+        preview.innerHTML = '';
+        if (files) {
+            Array.from(files).forEach(file => {
+                if (file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const col = document.createElement('div');
+                        col.className = 'col-3 mb-2';
+                        col.innerHTML = `<img src="${e.target.result}" class="img-fluid rounded" style="max-height:100px;">`;
+                        preview.appendChild(col);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+    }
+    </script>
 </body>
 
 </html>
