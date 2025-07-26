@@ -9,6 +9,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $club_name_he = $_POST['club_name_he'];
     $location_en = $_POST['location_en'];
     $location_he = $_POST['location_he'];
+    $address_en = $_POST['address_en'];
+    $address_he = $_POST['address_he'];
     $email = $_POST['email'];
     $mobile = $_POST['mobile'];
     $entertainment_type_en = $_POST['entertainment_type_en'];
@@ -30,6 +32,7 @@ $opens_till = !empty($_POST['opens_till']) ? $_POST['opens_till'] : null;
 
 
     // Update query
+
     $sql = "UPDATE clients SET 
         client_name_en = ?, 
         client_name_he = ?,
@@ -37,6 +40,8 @@ $opens_till = !empty($_POST['opens_till']) ? $_POST['opens_till'] : null;
         club_name_he = ?,
         location_en = ?, 
         location_he = ?,
+        address_en = ?,
+        address_he = ?,
         email = ?, 
         mobile = ?, 
         entertainment_type_en = ?, 
@@ -56,7 +61,7 @@ $opens_till = !empty($_POST['opens_till']) ? $_POST['opens_till'] : null;
         WHERE id = ?";
 
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ssssssssssssssssssssssi", $client_name_en, $client_name_he,$club_name_en, $club_name_he,$location_en, $location_he, $email, $mobile, $entertainment_type_en, $entertainment_type_he, $latitude, $longitude, $bio_en, $bio_he, $deal_en, $deal_he, $url, $map_link, $from_date, $to_date, $opens_from, $opens_till, $client_id);
+    $stmt->bind_param("ssssssssssssssssssssssssi", $client_name_en, $client_name_he, $club_name_en, $club_name_he, $location_en, $location_he, $address_en, $address_he, $email, $mobile, $entertainment_type_en, $entertainment_type_he, $latitude, $longitude, $bio_en, $bio_he, $deal_en, $deal_he, $url, $map_link, $from_date, $to_date, $opens_from, $opens_till, $client_id);
 
     if ($stmt->execute()) {
         echo "<script>alert('Client updated successfully!'); window.location='client-profile.php?client_id=$client_id';</script>";

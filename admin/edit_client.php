@@ -70,6 +70,7 @@ $client = $result->fetch_assoc();
                                 value="<?php echo htmlspecialchars($client['club_name_he']); ?>">
                         </div>
                         
+
                         <div class="mb-3">
                             <label class="form-label">City (English)</label>
                             <input type="text" class="form-control" name="location_en"
@@ -80,6 +81,18 @@ $client = $result->fetch_assoc();
                             <label class="form-label">City (Hebrew)</label>
                             <input type="text" dir="rtl" class="form-control" name="location_he"
                                 value="<?php echo htmlspecialchars($client['location_he']); ?>">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Address (English)</label>
+                            <input type="text" class="form-control" name="address_en"
+                                value="<?php echo htmlspecialchars($client['address_en']); ?>">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Address (Hebrew)</label>
+                            <input type="text" dir="rtl" class="form-control" name="address_he"
+                                value="<?php echo htmlspecialchars($client['address_he']); ?>">
                         </div>
 
                         <div class="mb-3">
