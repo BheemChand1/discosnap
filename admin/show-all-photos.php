@@ -69,7 +69,7 @@ if ($result->num_rows > 0) {
                 $photo = trim($photo);
                 if ($photo) {
                     $img_src = (strpos($photo, 'http://') === 0 || strpos($photo, 'https://') === 0) ? $photo : '../uploads/' . htmlspecialchars($photo);
-                    echo '<div class="col-6 col-sm-4 col-md-3 col-lg-2 mb-4 position-relative d-flex align-items-center justify-content-center">';
+                    echo '<div class="photo-grid-item col-6 col-sm-4 col-md-3 col-lg-2 mb-4 position-relative d-flex align-items-center justify-content-center">';
                     echo '<img src="' . htmlspecialchars($img_src) . '" class="img-fluid rounded border" style="max-height:120px; max-width:100%;">';
                     echo '<button type="button" class="btn btn-danger btn-sm position-absolute delete-photo-btn" style="top:2px; right:2px; z-index:2; opacity:0.95; border-radius:50%; padding:0.3rem 0.5rem;" data-photo="' . htmlspecialchars($photo) . '" data-client="' . $client_id . '" title="Delete"><i class="fas fa-trash"></i></button>';
                     echo '</div>';
@@ -94,7 +94,7 @@ $(document).on('click', '.delete-photo-btn', function() {
         data: { photo: photo, client_id: client_id },
         success: function(response) {
             if (response.trim() === 'success') {
-                btn.closest('.col-6, .col-sm-4, .col-md-3, .col-lg-2').remove();
+                btn.closest('.photo-grid-item').remove();
             } else {
                 alert('Failed to delete photo.');
             }
