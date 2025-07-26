@@ -64,18 +64,26 @@ if ($result->num_rows > 0) {
 <div class="card-header d-flex flex-wrap justify-content-between align-items-center gap-2">
     <div class="d-flex align-items-center gap-2 flex-wrap">
         <h5 class="card-title mb-0 me-2">Client Profile</h5>
-        <?php if (!empty($client['photos'])): ?>
-            <?php 
+        <?php 
+        $max_photos = 4;
+        $photo_count = 0;
+        if (!empty($client['photos'])) {
             $photos = explode(',', $client['photos']);
             foreach ($photos as $photo) {
                 $photo = trim($photo);
                 if ($photo) {
-                    $img_src = (strpos($photo, 'http://') === 0 || strpos($photo, 'https://') === 0) ? $photo : '../uploads/' . htmlspecialchars($photo);
-                    echo '<img src="' . htmlspecialchars($img_src) . '" class="rounded border" style="max-height:40px; max-width:40px; margin-right:4px;">';
+                    if ($photo_count < $max_photos) {
+                        $img_src = (strpos($photo, 'http://') === 0 || strpos($photo, 'https://') === 0) ? $photo : '../uploads/' . htmlspecialchars($photo);
+                        echo '<img src="' . htmlspecialchars($img_src) . '" class="rounded border" style="max-height:40px; max-width:40px; margin-right:4px;">';
+                    }
+                    $photo_count++;
                 }
             }
-            ?>
-        <?php endif; ?>
+            if ($photo_count > $max_photos) {
+                echo '<a href="show-all-photos.php?client_id=' . $client_id . '" class="btn btn-outline-info btn-sm ms-2">Show All Photos</a>';
+            }
+        }
+        ?>
         <button class="btn btn-success btn-sm ms-2" data-bs-toggle="modal" data-bs-target="#addPhotoModal"><i class="fas fa-plus"></i> Add Photo</button>
     </div>
     <a href="edit_client.php?client_id=<?php echo $client_id; ?>" class="btn btn-primary btn-sm">
