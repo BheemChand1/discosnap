@@ -33,6 +33,7 @@ $query = "
            c.created_at,
            c.opens_from, 
            c.opens_till,
+           COALESCE(c.address_$lang, c.address_he, c.address_en) AS address,
            COALESCE(c.bio_$lang, c.bio_he, c.bio_en) AS bio,
            COALESCE(c.client_name_$lang, c.client_name_he, c.client_name_en) AS client_name,
            COALESCE(c.club_name_$lang, c.club_name_he, c.club_name_en) AS club_name,
