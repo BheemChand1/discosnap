@@ -43,8 +43,7 @@ $client = $result->fetch_assoc();
             <main class="content px-3 py-2">
                 <div class="container mt-4">
                     <h2>Edit Client Information</h2>
-                    <form action="update_client.php" method="POST" enctype="multipart/form-data">
-                        
+                    <form action="update_client.php" method="POST">
                         <input type="hidden" name="client_id" value="<?php echo $client_id; ?>">
 
                         <div class="mb-3">
@@ -127,7 +126,7 @@ $client = $result->fetch_assoc();
     <textarea class="form-control" name="bio_he" rows="4" dir="rtl"><?php echo htmlspecialchars($client['bio_he']); ?></textarea>
 </div>
 
-                        <div class="mb-3">
+<div class="mb-3">
                             <label class="form-label">Deal (English)</label>
                             <input type="text" class="form-control" name="deal_en"
                                 value="<?php echo htmlspecialchars($client['deal_en']); ?>">
@@ -216,50 +215,6 @@ $client = $result->fetch_assoc();
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/script.js"></script>
-    <script>
-    function previewClientPhotos(event) {
-        const files = event.target.files;
-        const preview = document.getElementById('selected-photos-preview');
-        preview.innerHTML = '';
-        if (files) {
-            Array.from(files).forEach(file => {
-                if (file.type.startsWith('image/')) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        const col = document.createElement('div');
-                        col.className = 'col-3 mb-2';
-                        col.innerHTML = `<img src="${e.target.result}" class="img-fluid rounded" style="max-height:100px;">`;
-                        preview.appendChild(col);
-                    };
-                    reader.readAsDataURL(file);
-                }
-            });
-        }
-    }
-
-    // Delete photo handler
-    $(document).on('click', '.delete-photo-btn', function() {
-        if (!confirm('Are you sure you want to delete this photo?')) return;
-        var btn = $(this);
-        var photo = btn.data('photo');
-        var client_id = btn.data('client');
-        $.ajax({
-            url: 'delete_client_photo.php',
-            type: 'POST',
-            data: { photo: photo, client_id: client_id },
-            success: function(response) {
-                if (response.trim() === 'success') {
-                    btn.closest('.col-3').remove();
-                } else {
-                    alert('Failed to delete photo.');
-                }
-            },
-            error: function() {
-                alert('Error deleting photo.');
-            }
-        });
-    });
-    </script>
 </body>
 
 </html>

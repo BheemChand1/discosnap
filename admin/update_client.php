@@ -2,8 +2,6 @@
 include 'connection.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
-    // ...photos upload and merge code removed...
     $client_id = $_POST['client_id'];
     $client_name_en = $_POST['client_name_en'];
     $client_name_he = $_POST['client_name_he'];
@@ -31,7 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 $opens_till = !empty($_POST['opens_till']) ? $_POST['opens_till'] : null;
 
 
-    // Update query without photos
+    // Update query
     $sql = "UPDATE clients SET 
         client_name_en = ?, 
         client_name_he = ?,
@@ -58,7 +56,7 @@ $opens_till = !empty($_POST['opens_till']) ? $_POST['opens_till'] : null;
         WHERE id = ?";
 
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("sssssssssssssssssssssssi", $client_name_en, $client_name_he, $club_name_en, $club_name_he, $location_en, $location_he, $email, $mobile, $entertainment_type_en, $entertainment_type_he, $latitude, $longitude, $bio_en, $bio_he, $deal_en, $deal_he, $url, $map_link, $from_date, $to_date, $opens_from, $opens_till, $client_id);
+    $stmt->bind_param("ssssssssssssssssssssssi", $client_name_en, $client_name_he,$club_name_en, $club_name_he,$location_en, $location_he, $email, $mobile, $entertainment_type_en, $entertainment_type_he, $latitude, $longitude, $bio_en, $bio_he, $deal_en, $deal_he, $url, $map_link, $from_date, $to_date, $opens_from, $opens_till, $client_id);
 
     if ($stmt->execute()) {
         echo "<script>alert('Client updated successfully!'); window.location='client-profile.php?client_id=$client_id';</script>";
