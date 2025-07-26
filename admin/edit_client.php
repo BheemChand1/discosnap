@@ -43,7 +43,25 @@ $client = $result->fetch_assoc();
             <main class="content px-3 py-2">
                 <div class="container mt-4">
                     <h2>Edit Client Information</h2>
-                    <form action="update_client.php" method="POST">
+                    <form action="update_client.php" method="POST" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label class="form-label">Client Photos</label>
+                            <input type="file" class="form-control" name="client_photos[]" multiple accept="image/*">
+                            <div class="row mt-2">
+                                <!-- Display existing client photos if any -->
+                                <?php
+                                if (!empty($client['photos'])) {
+                                    $photos = explode(',', $client['photos']);
+                                    foreach ($photos as $photo) {
+                                        $photo = trim($photo);
+                                        if ($photo) {
+                                            echo '<div class="col-3 mb-2"><img src="../uploads/' . htmlspecialchars($photo) . '" class="img-fluid rounded" style="max-height:100px;"></div>';
+                                        }
+                                    }
+                                }
+                                ?>
+                            </div>
+                        </div>
                         <input type="hidden" name="client_id" value="<?php echo $client_id; ?>">
 
                         <div class="mb-3">
@@ -126,7 +144,7 @@ $client = $result->fetch_assoc();
     <textarea class="form-control" name="bio_he" rows="4" dir="rtl"><?php echo htmlspecialchars($client['bio_he']); ?></textarea>
 </div>
 
-<div class="mb-3">
+                        <div class="mb-3">
                             <label class="form-label">Deal (English)</label>
                             <input type="text" class="form-control" name="deal_en"
                                 value="<?php echo htmlspecialchars($client['deal_en']); ?>">
