@@ -245,7 +245,37 @@ if ($result->num_rows > 0) {
     </div>
 </div>
 
-<!-- Google Map Section -->
+<!-- Photos Section -->
+<?php if (!empty($client['photos'])): ?>
+<div class="col-md-12 mb-4">
+    <div class="card bg-dark text-white">
+        <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
+            <h5 class="mb-0"><i class="fas fa-images me-2"></i>Photos</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <?php
+                $photos = array_filter(array_map('trim', explode(',', $client['photos'])));
+                $max_photos = 4;
+                $count = 0;
+                foreach ($photos as $photo) {
+                    if ($count >= $max_photos) break;
+                    $img_src = (strpos($photo, 'http://') === 0 || strpos($photo, 'https://') === 0) ? $photo : '../uploads/' . htmlspecialchars($photo);
+                ?>
+                <div class="col-6 col-md-3 mb-3 d-flex align-items-center justify-content-center">
+                    <img src="<?php echo htmlspecialchars($img_src); ?>" class="img-fluid rounded border" style="max-height:120px; max-width:100%;">
+                </div>
+                <?php $count++; } ?>
+            </div>
+            <?php if (count($photos) > $max_photos): ?>
+                <div class="text-center mt-2">
+                    <a href="../admin/show-all-photos.php?client_id=<?php echo urlencode($client['id']); ?>" class="btn btn-outline-light btn-sm">Show All Photos</a>
+                </div>
+            <?php endif; ?>
+        </div>
+    </div>
+</div>
+<?php endif; ?>
                 <div class="col-md-12">
     <div class="card bg-dark text-white">
         <div class="card-header bg-secondary text-white">
