@@ -259,10 +259,7 @@ if ($result->num_rows > 0) {
                 if (!empty($client['photos'])) {
                     $photos = array_filter(array_map('trim', explode(',', $client['photos'])));
                 }
-                $max_photos = 4;
-                $count = 0;
                 foreach ($photos as $photo) {
-                    if ($count >= $max_photos) break;
                     $img_src = (strpos($photo, 'http://') === 0 || strpos($photo, 'https://') === 0) ? $photo : '../uploads/' . htmlspecialchars($photo);
                 ?>
                 <div class="col-6 col-md-3 mb-3 d-flex flex-column align-items-center justify-content-center position-relative">
@@ -274,13 +271,8 @@ if ($result->num_rows > 0) {
                         <button type="submit" class="btn btn-danger btn-sm position-absolute" style="top:5px; right:10px; border-radius:50%;"><i class="fas fa-trash"></i></button>
                     </form>
                 </div>
-                <?php $count++; } ?>
+                <?php } ?>
             </div>
-            <?php if (count($photos) > $max_photos): ?>
-                <div class="text-center mt-2">
-                    <a href="../admin/show-all-photos.php?client_id=<?php echo urlencode($client['id']); ?>" class="btn btn-outline-light btn-sm">Show All Photos</a>
-                </div>
-            <?php endif; ?>
         </div>
     </div>
 </div>
