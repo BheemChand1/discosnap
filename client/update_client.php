@@ -28,6 +28,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $opens_from = !empty($_POST['opens_from']) ? $_POST['opens_from'] : null;
     $opens_till = !empty($_POST['opens_till']) ? $_POST['opens_till'] : null;
 
+    // Address fields
+    $address_en = isset($_POST['address_en']) ? $_POST['address_en'] : '';
+    $address_he = isset($_POST['address_he']) ? $_POST['address_he'] : '';
+
     // Check if a new password is provided
     if (!empty($_POST['password'])) {
         $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
@@ -54,11 +58,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             to_date = ?, 
             opens_from = ?, 
             opens_till = ?,
+            address_en = ?,
+            address_he = ?,
             password = ?
             WHERE id = ?";
 
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("sssssssssssssssssssssssi", $client_name_en, $client_name_he, $club_name_en, $club_name_he, $location_en, $location_he, $email, $mobile, $entertainment_type_en, $entertainment_type_he, $latitude, $longitude, $bio_en, $bio_he, $deal_en, $deal_he, $url, $map_link, $from_date, $to_date, $opens_from, $opens_till, $password, $client_id);
+        $stmt->bind_param("ssssssssssssssssssssssssssi", $client_name_en, $client_name_he, $club_name_en, $club_name_he, $location_en, $location_he, $email, $mobile, $entertainment_type_en, $entertainment_type_he, $latitude, $longitude, $bio_en, $bio_he, $deal_en, $deal_he, $url, $map_link, $from_date, $to_date, $opens_from, $opens_till, $address_en, $address_he, $password, $client_id);
     } else {
         $sql = "UPDATE clients SET 
             client_name_en = ?, 
@@ -83,10 +89,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             to_date = ?, 
             opens_from = ?, 
             opens_till = ?
+            , address_en = ?
+            , address_he = ?
             WHERE id = ?";
 
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("ssssssssssssssssssssssi", $client_name_en, $client_name_he, $club_name_en, $club_name_he, $location_en, $location_he, $email, $mobile, $entertainment_type_en, $entertainment_type_he, $latitude, $longitude, $bio_en, $bio_he, $deal_en, $deal_he, $url, $map_link, $from_date, $to_date, $opens_from, $opens_till, $client_id);
+        $stmt->bind_param("sssssssssssssssssssssssi", $client_name_en, $client_name_he, $club_name_en, $club_name_he, $location_en, $location_he, $email, $mobile, $entertainment_type_en, $entertainment_type_he, $latitude, $longitude, $bio_en, $bio_he, $deal_en, $deal_he, $url, $map_link, $from_date, $to_date, $opens_from, $opens_till, $address_en, $address_he, $client_id);
     }
 
     if ($stmt->execute()) {

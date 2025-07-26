@@ -156,6 +156,18 @@ $client = $result->fetch_assoc();
         </div>
 
         <div class="mb-3">
+            <label class="form-label">Address (English)</label>
+            <input type="text" class="form-control bg-secondary text-light border-light" name="address_en"
+                value="<?php echo htmlspecialchars($client['address_en']); ?>">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Address (Hebrew)</label>
+            <input type="text" dir="rtl" class="form-control bg-secondary text-light border-light" name="address_he"
+                value="<?php echo htmlspecialchars($client['address_he']); ?>">
+        </div>
+
+        <div class="mb-3">
             <label class="form-label">Phone</label>
             <input type="text" class="form-control bg-secondary text-light border-light" name="mobile"
                 value="<?php echo htmlspecialchars($client['mobile']); ?>">
