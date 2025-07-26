@@ -91,7 +91,7 @@ if ($result->num_rows > 0) {
         <h5 class="modal-title" id="addPhotoModalLabel">Add More Photos</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <form action="update_client.php" method="POST" enctype="multipart/form-data">
+      <form action="upload_client_photos.php" method="POST" enctype="multipart/form-data">
         <div class="modal-body">
           <input type="hidden" name="client_id" value="<?php echo $client_id; ?>">
           <div class="mb-3">
