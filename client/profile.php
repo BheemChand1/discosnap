@@ -246,24 +246,33 @@ if ($result->num_rows > 0) {
 </div>
 
 <!-- Photos Section -->
-<?php if (!empty($client['photos'])): ?>
 <div class="col-md-12 mb-4">
     <div class="card bg-dark text-white">
         <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
             <h5 class="mb-0"><i class="fas fa-images me-2"></i>Photos</h5>
+            <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#addPhotosModal"><i class="fas fa-plus"></i> Add Photos</button>
         </div>
         <div class="card-body">
             <div class="row">
                 <?php
-                $photos = array_filter(array_map('trim', explode(',', $client['photos'])));
+                $photos = [];
+                if (!empty($client['photos'])) {
+                    $photos = array_filter(array_map('trim', explode(',', $client['photos'])));
+                }
                 $max_photos = 4;
                 $count = 0;
                 foreach ($photos as $photo) {
                     if ($count >= $max_photos) break;
                     $img_src = (strpos($photo, 'http://') === 0 || strpos($photo, 'https://') === 0) ? $photo : '../uploads/' . htmlspecialchars($photo);
                 ?>
-                <div class="col-6 col-md-3 mb-3 d-flex align-items-center justify-content-center">
-                    <img src="<?php echo htmlspecialchars($img_src); ?>" class="img-fluid rounded border" style="max-height:120px; max-width:100%;">
+                <div class="col-6 col-md-3 mb-3 d-flex flex-column align-items-center justify-content-center position-relative">
+                    <img src="<?php echo htmlspecialchars($img_src); ?>" class="img-fluid rounded border mb-2" style="max-height:120px; max-width:100%;">
+                    <form method="POST" action="../admin/show-all-photos.php" onsubmit="return confirm('Are you sure you want to delete this photo?');" style="display:inline;">
+                        <input type="hidden" name="delete_photo" value="1">
+                        <input type="hidden" name="photo" value="<?php echo htmlspecialchars($photo); ?>">
+                        <input type="hidden" name="client_id" value="<?php echo htmlspecialchars($client['id']); ?>">
+                        <button type="submit" class="btn btn-danger btn-sm position-absolute" style="top:5px; right:10px; border-radius:50%;"><i class="fas fa-trash"></i></button>
+                    </form>
                 </div>
                 <?php $count++; } ?>
             </div>
@@ -275,7 +284,28 @@ if ($result->num_rows > 0) {
         </div>
     </div>
 </div>
-<?php endif; ?>
+
+<!-- Add Photos Modal -->
+<div class="modal fade" id="addPhotosModal" tabindex="-1" aria-labelledby="addPhotosModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content bg-dark text-white">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addPhotosModalLabel">Add Photos</h5>
+        <button type="button" class="btn-close bg-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="../admin/upload_client_photos.php" method="POST" enctype="multipart/form-data">
+          <input type="hidden" name="client_id" value="<?php echo htmlspecialchars($client['id']); ?>">
+          <div class="mb-3">
+            <label for="client_photos" class="form-label">Select Photos</label>
+            <input type="file" class="form-control" id="client_photos" name="client_photos[]" multiple accept="image/*" required>
+          </div>
+          <button type="submit" class="btn btn-success">Upload</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
                 <div class="col-md-12">
     <div class="card bg-dark text-white">
         <div class="card-header bg-secondary text-white">
