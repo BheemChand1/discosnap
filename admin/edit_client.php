@@ -44,29 +44,7 @@ $client = $result->fetch_assoc();
                 <div class="container mt-4">
                     <h2>Edit Client Information</h2>
                     <form action="update_client.php" method="POST" enctype="multipart/form-data">
-                        <div class="mb-3">
-                            <label class="form-label">Client Photos</label>
-                            <input type="file" class="form-control" id="client_photos" name="client_photos[]" multiple accept="image/*" onchange="previewClientPhotos(event)">
-                            <div class="row mt-2" id="selected-photos-preview"></div>
-                            <div class="row mt-2">
-                                <!-- Display existing client photos if any -->
-                                <?php
-                                if (!empty($client['photos'])) {
-                                    $photos = explode(',', $client['photos']);
-                                    foreach ($photos as $photo) {
-                                        $photo = trim($photo);
-                                        if ($photo) {
-                                            $img_src = (strpos($photo, 'http://') === 0 || strpos($photo, 'https://') === 0) ? $photo : '../uploads/' . htmlspecialchars($photo);
-                                            echo '<div class="col-3 d-flex align-items-center justify-content-center p-1 position-relative" style="min-width:120px;">';
-                                            echo '<img src="' . htmlspecialchars($img_src) . '" class="img-fluid rounded border" style="max-height:100px; max-width:100px;">';
-                                            echo '<button type="button" class="btn btn-danger btn-sm position-absolute delete-photo-btn" style="top:2px; right:2px; z-index:2; opacity:0.95; border-radius:50%; padding:0.3rem 0.5rem;" data-photo="' . htmlspecialchars($photo) . '" data-client="' . $client_id . '" title="Delete"><i class="fas fa-trash"></i></button>';
-                                            echo '</div>';
-                                        }
-                                    }
-                                }
-                                ?>
-                            </div>
-                        </div>
+                        
                         <input type="hidden" name="client_id" value="<?php echo $client_id; ?>">
 
                         <div class="mb-3">
