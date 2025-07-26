@@ -19,6 +19,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = isset($_POST['password']) && $_POST['password'] !== '' ? password_hash($_POST['password'], PASSWORD_DEFAULT) : null;
     $location_en = sanitizeInput($_POST['location_en'] ?? null);
     $location_he = sanitizeInput($_POST['location_he'] ?? null);
+
+    $address_en = sanitizeInput($_POST['address_en'] ?? null);
+    $address_he = sanitizeInput($_POST['address_he'] ?? null);
     $mapLink = sanitizeInput($_POST['map_link'] ?? null);
     $url = sanitizeInput($_POST['url'] ?? null);
     $bio_en = sanitizeInput($_POST['bio_en'] ?? null);
@@ -31,18 +34,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $longitude = sanitizeInput($_POST['longitude'] ?? null);
 
     // Prepare the SQL query
+
     $stmt = $conn->prepare(
         "INSERT INTO clients (
             client_name_en, client_name_he, mobile, email, 
             club_name_en, club_name_he, from_date, to_date, password, 
-            location_en, location_he, map_link, url, 
+            location_en, location_he, address_en, address_he, map_link, url, 
             bio_en, bio_he, deal_en, deal_he, entertainment_type_en, entertainment_type_he, latitude, longitude
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
     );
 
     // Bind parameters dynamically with NULL support
+
     $stmt->bind_param(
-        "sssssssssssssssssssss", 
+        "ssssssssssssssssssssssss", 
         $client_name_en, 
         $client_name_he, 
         $mobile, 
@@ -54,6 +59,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $password, 
         $location_en, 
         $location_he, 
+        $address_en, 
+        $address_he, 
         $mapLink, 
         $url, 
         $bio_en, 

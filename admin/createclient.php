@@ -69,6 +69,7 @@ include 'connection.php';
         </div>
     </div>
 
+
     <div class="row mb-3">
         <div class="col-md-6">
             <label for="locationEn" class="form-label">City (English)</label>
@@ -77,6 +78,17 @@ include 'connection.php';
         <div class="col-md-6">
             <label for="locationHe" class="form-label">City (Hebrew)</label>
             <input type="text" class="form-control" id="locationHe" name="location_he" placeholder="הזן את שם העיר בעברית" dir="rtl">
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label for="addressEn" class="form-label">Address (English)</label>
+            <input type="text" class="form-control" id="addressEn" name="address_en" placeholder="Enter address in English">
+        </div>
+        <div class="col-md-6">
+            <label for="addressHe" class="form-label">Address (Hebrew)</label>
+            <input type="text" class="form-control" id="addressHe" name="address_he" placeholder="הזן כתובת בעברית" dir="rtl">
         </div>
     </div>
 
@@ -283,10 +295,12 @@ n>
             }
         }
 
+
         // Validate all required pairs
         validatePair('clientNameEn', 'clientNameHe');
         validatePair('clubNameEn', 'clubNameHe');
         validatePair('locationEn', 'locationHe');
+        validatePair('addressEn', 'addressHe');
         validatePair('entertainmentTypeEn', 'entertainmentTypeHe');
         validatePair('bioEn', 'bioHe');
         validatePair('dealEn', 'dealHe');
