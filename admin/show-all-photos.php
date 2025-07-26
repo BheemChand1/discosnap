@@ -1,3 +1,67 @@
+
+<?php
+include 'connection.php';
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+// Fetch client data
+$client_id = $_GET['client_id'];
+// Handle delete photo POST
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_photo'])) {
+    $photo_to_delete = $_POST['delete_photo'];
+    if ($photo_to_delete && $client_id) {
+        $sql = "SELECT photos FROM clients WHERE id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param('i', $client_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($row = $result->fetch_assoc()) {
+            $photos = $row['photos'];
+            $photos_arr = array_filter(explode(',', $photos));
+            $photo_basename = basename(parse_url($photo_to_delete, PHP_URL_PATH));
+            $photos_arr = array_filter($photos_arr, function($item) use ($photo_to_delete, $photo_basename) {
+                $item = trim($item);
+                if ($item === $photo_to_delete) return false;
+                $item_basename = basename(parse_url($item, PHP_URL_PATH));
+                if ($item_basename === $photo_basename) return false;
+                return true;
+            });
+            $new_photos = implode(',', $photos_arr);
+            $update = $conn->prepare("UPDATE clients SET photos = ? WHERE id = ?");
+            $update->bind_param('si', $new_photos, $client_id);
+            $update->execute();
+            $update->close();
+            // Delete file from server if local
+            if (strpos($photo_to_delete, 'http://') === false && strpos($photo_to_delete, 'https://') === false) {
+                $file_path = realpath(__DIR__ . '/../uploads/' . $photo_to_delete);
+                if ($file_path && file_exists($file_path)) {
+                    @unlink($file_path);
+                }
+            } else {
+                $parsed = parse_url($photo_to_delete);
+                if (isset($parsed['path'])) {
+                    $basename = basename($parsed['path']);
+                    $file_path = realpath(__DIR__ . '/../uploads/' . $basename);
+                    if ($file_path && file_exists($file_path)) {
+                        @unlink($file_path);
+                    }
+                }
+            }
+            // Redirect to avoid resubmission
+            header('Location: show-all-photos.php?client_id=' . $client_id);
+            exit;
+        }
+    }
+}
+$sql = "SELECT * FROM clients WHERE id = $client_id";
+$result = $conn->query($sql);
+if ($result->num_rows > 0) {
+    $client = $result->fetch_assoc();
+} else {
+    die("Client not found.");
+}
+?>
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="dark">
 
