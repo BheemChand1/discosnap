@@ -235,7 +235,8 @@ if ($result->num_rows > 0) {
                     <li class="list-group-item bg-dark text-white"><strong>Phone:</strong> <?php echo htmlspecialchars($client['mobile'] ?? 'Not mentioned'); ?></li>
                     <li class="list-group-item bg-dark text-white"><strong>Club:</strong> <?php echo htmlspecialchars($client['club_name_en'] ?? 'Not mentioned'); ?></li>
                     <li class="list-group-item bg-dark text-white"><strong>Location:</strong> <?php echo htmlspecialchars($client['location_en'] ?? 'Not mentioned'); ?></li>
-                    <li class="list-group-item bg-dark text-white"><strong>Bio:</strong> <?php echo htmlspecialchars($client['bio_en'] ?? 'Not mentioned'); ?></li>
+                    <li class="list-group-item bg-dark text-white"><strong>Address:</strong> <?php echo htmlspecialchars($client['address_en'] ?? 'Not mentioned'); ?></li>
+                    <li class="list-group-item bg-dark text-white"><strong></strong>Bio:</strong> <?php echo htmlspecialchars($client['bio_en'] ?? 'Not mentioned'); ?></li>
                     <li class="list-group-item bg-dark text-white"><strong>Deal:</strong> <?php echo htmlspecialchars($client['deal_en'] ?? 'Not mentioned'); ?></li>
                     <li class="list-group-item bg-dark text-white"><strong>Entertainment Type:</strong> <?php echo htmlspecialchars($client['entertainment_type_en'] ?? 'Not mentioned'); ?></li>
                     <li class="list-group-item bg-dark text-white"><strong>Latitude:</strong> <?php echo htmlspecialchars($client['latitude'] ?? 'Not mentioned'); ?></li>
@@ -262,6 +263,7 @@ if ($result->num_rows > 0) {
                     <li class="list-group-item bg-dark text-white"><strong>טלפון:</strong> <?php echo htmlspecialchars($client['mobile'] ?? 'Not mentioned'); ?></li>
                     <li class="list-group-item bg-dark text-white"><strong>מועדון:</strong> <?php echo htmlspecialchars($client['club_name_he'] ?? 'Not mentioned'); ?></li>
                     <li class="list-group-item bg-dark text-white"><strong>מיקום:</strong> <?php echo htmlspecialchars($client['location_he'] ?? 'Not mentioned'); ?></li>
+                    <li class="list-group-item bg-dark text-white"><strong>כתובת:</strong> <?php echo htmlspecialchars($client['address_he'] ?? 'Not mentioned'); ?></li>
                     <li class="list-group-item bg-dark text-white"><strong>אודות:</strong> <?php echo htmlspecialchars($client['bio_he'] ?? 'Not mentioned'); ?></li>
                     <li class="list-group-item bg-dark text-white"><strong>מבצע:</strong> <?php echo htmlspecialchars($client['deal_he'] ?? 'Not mentioned'); ?></li>
                     <li class="list-group-item bg-dark text-white">
