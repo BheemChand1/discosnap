@@ -69,21 +69,66 @@ if ($result->num_rows > 0) {
         </div>
         <div class="card-body">
             <div class="row">
+
     <!-- Profile Header -->
     <div class="col-md-12 mb-4 text-center">
-    <img src="<?php echo !empty($client['club_thumbnail']) ? htmlspecialchars($client['club_thumbnail']) : 'https://cdn.jsdelivr.net/npm/bootstrap-icons/icons/person-circle.svg'; ?>" 
-         class="mb-3" 
-         alt="Profile Picture" 
-         width="80" id="thumbnailPreview">
-         <br>
-         <!-- Update Thumbnail Button -->
-    <button class="btn btn-primary btn-sm mb-3" data-bs-toggle="modal" data-bs-target="#updateThumbnailModal">Update Thumbnail</button>
+        <img src="<?php echo !empty($client['club_thumbnail']) ? htmlspecialchars($client['club_thumbnail']) : 'https://cdn.jsdelivr.net/npm/bootstrap-icons/icons/person-circle.svg'; ?>" 
+            class="mb-3" 
+            alt="Profile Picture" 
+            width="80" id="thumbnailPreview">
+        <br>
+        <!-- Update Thumbnail Button -->
+        <button class="btn btn-primary btn-sm mb-3" data-bs-toggle="modal" data-bs-target="#updateThumbnailModal">Update Thumbnail</button>
 
-    <h3 class="client-name">
-        <?php echo htmlspecialchars($client['client_name_en'] ?? 'Not mentioned'); ?> / 
-        <?php echo htmlspecialchars($client['client_name_he'] ?? 'Not mentioned'); ?>
-    </h3>
+        <h3 class="client-name">
+            <?php echo htmlspecialchars($client['client_name_en'] ?? 'Not mentioned'); ?> / 
+            <?php echo htmlspecialchars($client['client_name_he'] ?? 'Not mentioned'); ?>
+        </h3>
+
+        <!-- Client Photos Gallery -->
+        <?php if (!empty($client['photos'])): ?>
+        <div class="row justify-content-center mb-3">
+            <?php 
+            $photos = explode(',', $client['photos']);
+            foreach ($photos as $photo) {
+                $photo = trim($photo);
+                if ($photo) {
+                    $img_src = (strpos($photo, 'http://') === 0 || strpos($photo, 'https://') === 0) ? $photo : '../uploads/' . htmlspecialchars($photo);
+                    echo '<div class="col-3 d-flex align-items-center justify-content-center p-1 position-relative" style="min-width:120px;">';
+                    echo '<img src="' . htmlspecialchars($img_src) . '" class="img-fluid rounded border" style="max-height:100px; max-width:100px;">';
+                    echo '<button type="button" class="btn btn-danger btn-sm position-absolute delete-photo-btn" style="top:2px; right:2px; z-index:2; opacity:0.95; border-radius:50%; padding:0.3rem 0.5rem;" data-photo="' . htmlspecialchars($photo) . '" data-client="' . $client_id . '" title="Delete"><i class="fas fa-trash"></i></button>';
+                    echo '</div>';
+                }
+            }
+            ?>
+        </div>
+        <?php endif; ?>
+    </div>
 </div>
+<script>
+// Delete photo handler for profile page
+$(document).on('click', '.delete-photo-btn', function() {
+    if (!confirm('Are you sure you want to delete this photo?')) return;
+    var btn = $(this);
+    var photo = btn.data('photo');
+    var client_id = btn.data('client');
+    $.ajax({
+        url: 'delete_client_photo.php',
+        type: 'POST',
+        data: { photo: photo, client_id: client_id },
+        success: function(response) {
+            if (response.trim() === 'success') {
+                btn.closest('.col-3').remove();
+            } else {
+                alert('Failed to delete photo.');
+            }
+        },
+        error: function() {
+            alert('Error deleting photo.');
+        }
+    });
+});
+</script>
 
 <!-- Modal -->
 <div class="modal fade" id="updateThumbnailModal" tabindex="-1" aria-labelledby="updateThumbnailLabel" aria-hidden="true">
