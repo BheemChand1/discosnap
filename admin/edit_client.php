@@ -57,9 +57,9 @@ $client = $result->fetch_assoc();
                                         $photo = trim($photo);
                                         if ($photo) {
                                             $img_src = (strpos($photo, 'http://') === 0 || strpos($photo, 'https://') === 0) ? $photo : '../uploads/' . htmlspecialchars($photo);
-                                            echo '<div class="col-3 mb-2 position-relative">';
-                                            echo '<img src="' . htmlspecialchars($img_src) . '" class="img-fluid rounded" style="max-height:100px;">';
-                                            echo '<button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1 delete-photo-btn" data-photo="' . htmlspecialchars($photo) . '" data-client="' . $client_id . '"><i class="fas fa-trash"></i></button>';
+                                            echo '<div class="col-3 d-flex align-items-center justify-content-center p-1 position-relative" style="min-width:120px;">';
+                                            echo '<img src="' . htmlspecialchars($img_src) . '" class="img-fluid rounded border" style="max-height:100px; max-width:100px;">';
+                                            echo '<button type="button" class="btn btn-danger btn-sm position-absolute delete-photo-btn" style="top:2px; right:2px; z-index:2; opacity:0.95; border-radius:50%; padding:0.3rem 0.5rem;" data-photo="' . htmlspecialchars($photo) . '" data-client="' . $client_id . '" title="Delete"><i class="fas fa-trash"></i></button>';
                                             echo '</div>';
                                         }
                                     }
