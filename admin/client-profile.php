@@ -79,7 +79,7 @@ if ($result->num_rows > 0) {
                     $photo_count++;
                 }
             }
-            if ($photo_count > $max_photos) {
+            if (true) {
                 echo '<a href="show-all-photos.php?client_id=' . $client_id . '" class="btn btn-outline-info btn-sm ms-2">Show All Photos</a>';
             }
         }
