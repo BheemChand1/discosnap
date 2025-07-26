@@ -74,7 +74,7 @@ if ($result->num_rows > 0) {
                 if ($photo) {
                     if ($photo_count < $max_photos) {
                         $img_src = (strpos($photo, 'http://') === 0 || strpos($photo, 'https://') === 0) ? $photo : '../uploads/' . htmlspecialchars($photo);
-                        echo '<img src="' . htmlspecialchars($img_src) . '" class="rounded border" style="max-height:40px; max-width:40px; margin-right:4px;">';
+                        echo '<a href="' . htmlspecialchars($img_src) . '" target="_blank"><img src="' . htmlspecialchars($img_src) . '" class="rounded border" style="max-height:40px; max-width:40px; margin-right:4px;"></a>';
                     }
                     $photo_count++;
                 }
