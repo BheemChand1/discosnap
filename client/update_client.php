@@ -110,7 +110,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         $stmt = $conn->prepare($sql);
         $stmt->bind_param(
-            "sssssssssssssssssssssssisi",
+            "sssssssssssssssssssssssssi",
             $client_name_en, $client_name_he,
             $club_name_en, $club_name_he,
             $location_en, $location_he,
