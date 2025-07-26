@@ -56,9 +56,11 @@ $client = $result->fetch_assoc();
                                     foreach ($photos as $photo) {
                                         $photo = trim($photo);
                                         if ($photo) {
-                                            // If the photo is a full URL, use as is. Otherwise, prepend the uploads path (for backward compatibility)
                                             $img_src = (strpos($photo, 'http://') === 0 || strpos($photo, 'https://') === 0) ? $photo : '../uploads/' . htmlspecialchars($photo);
-                                            echo '<div class="col-3 mb-2"><img src="' . htmlspecialchars($img_src) . '" class="img-fluid rounded" style="max-height:100px;"></div>';
+                                            echo '<div class="col-3 mb-2 position-relative">';
+                                            echo '<img src="' . htmlspecialchars($img_src) . '" class="img-fluid rounded" style="max-height:100px;">';
+                                            echo '<button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1 delete-photo-btn" data-photo="' . htmlspecialchars($photo) . '" data-client="' . $client_id . '"><i class="fas fa-trash"></i></button>';
+                                            echo '</div>';
                                         }
                                     }
                                 }
@@ -256,6 +258,29 @@ $client = $result->fetch_assoc();
             });
         }
     }
+
+    // Delete photo handler
+    $(document).on('click', '.delete-photo-btn', function() {
+        if (!confirm('Are you sure you want to delete this photo?')) return;
+        var btn = $(this);
+        var photo = btn.data('photo');
+        var client_id = btn.data('client');
+        $.ajax({
+            url: 'delete_client_photo.php',
+            type: 'POST',
+            data: { photo: photo, client_id: client_id },
+            success: function(response) {
+                if (response.trim() === 'success') {
+                    btn.closest('.col-3').remove();
+                } else {
+                    alert('Failed to delete photo.');
+                }
+            },
+            error: function() {
+                alert('Error deleting photo.');
+            }
+        });
+    });
     </script>
 </body>
 
