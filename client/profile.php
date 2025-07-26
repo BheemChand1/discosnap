@@ -301,7 +301,7 @@ if ($result->num_rows > 0) {
                 ?>
                 <div class="col-6 col-md-3 mb-3 d-flex flex-column align-items-center justify-content-center position-relative">
                     <img src="<?php echo htmlspecialchars($img_src); ?>" class="img-fluid rounded border mb-2" style="max-height:120px; max-width:100%;">
-                    <form method="POST" action="../admin/show-all-photos.php" onsubmit="return confirm('Are you sure you want to delete this photo?');" style="display:inline;">
+                    <form method="POST" action="profile.php" onsubmit="return confirm('Are you sure you want to delete this photo?');" style="display:inline;">
                         <input type="hidden" name="delete_photo" value="1">
                         <input type="hidden" name="photo" value="<?php echo htmlspecialchars($photo); ?>">
                         <input type="hidden" name="client_id" value="<?php echo htmlspecialchars($client['id']); ?>">
