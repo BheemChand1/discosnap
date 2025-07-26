@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Bind parameters dynamically with NULL support
 
     $stmt->bind_param(
-        "ssssssssssssssssssssssss", 
+        "sssssssssssssssssssssss", 
         $client_name_en, 
         $client_name_he, 
         $mobile, 
